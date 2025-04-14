@@ -43,8 +43,15 @@ function clickEqualsButton(e){
     let button = e.target;
     let displayText = pDisplay.textContent;
 
-    pDisplay.textContent = operate(firstNumber,secondNumber,operatorToUse);
-    firstNumber = Number(pDisplay.textContent);
+    let result = operate(firstNumber,secondNumber,operatorToUse);
+    if(result == null){
+        pDisplay.textContent = "Nice try";
+    } else{
+        pDisplay.textContent = result;
+        firstNumber = Number(pDisplay.textContent);
+    }
+    
+    
         
 }
 
