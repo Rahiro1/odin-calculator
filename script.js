@@ -11,7 +11,7 @@ btnNumButtonsList.forEach(function (currentValue, currentIndex, listObj){
 function clickNumberButton(e){
     let button = e.target;
 
-    if(pDisplay.textContent = operatorToUse){
+    if(pDisplay.textContent === operatorToUse){
         pDisplay.textContent = "";
     }
 
