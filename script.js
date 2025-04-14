@@ -5,6 +5,7 @@ const pDisplay = document.querySelector(".display-p")
 const btnNumButtonsList = document.querySelectorAll(".number-button");
 const btnFuncButtonsList = document.querySelectorAll(".function-button");
 const btnEquals = document.querySelector(".equals-button");
+const btnClearAll = document.querySelector(".clear-all-button");
 
 btnNumButtonsList.forEach(function (currentValue, currentIndex, listObj){
     currentValue.addEventListener("click", function(e) {clickNumberButton(e)})
@@ -15,6 +16,7 @@ btnFuncButtonsList.forEach(function (currentValue, currentIndex, listObj){
 });
 
 btnEquals.addEventListener("click", function(e) {clickEqualsButton(e)})
+btnClearAll.addEventListener("click", function() {clickClearAllButton()})
 
 function clickNumberButton(e){
     let button = e.target;
@@ -50,9 +52,13 @@ function clickEqualsButton(e){
         pDisplay.textContent = result;
         firstNumber = Number(pDisplay.textContent);
     }
-    
-    
-        
+}
+
+function clickClearAllButton(){
+    firstNumber = "";
+    secondNumber = "";
+    operatorToUse = "";
+    pDisplay.textContent = "";
 }
 
 function operate(numOne, numTwo, operator){
