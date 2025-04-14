@@ -1,6 +1,7 @@
 let firstNumber = 0;
 let secondNumber = 0;
 let operatorToUse = "";
+let isDisplayResetOnNextNumber = false;
 const pDisplay = document.querySelector(".display-p")
 const btnNumButtonsList = document.querySelectorAll(".number-button");
 const btnFuncButtonsList = document.querySelectorAll(".function-button");
@@ -21,8 +22,9 @@ btnClearAll.addEventListener("click", function() {clickClearAllButton()})
 function clickNumberButton(e){
     let button = e.target;
 
-    if(pDisplay.textContent === operatorToUse){
+    if(isDisplayResetOnNextNumber){
         pDisplay.textContent = "";
+        isDisplayResetOnNextNumber = false;
     }
     
     pDisplay.textContent += button.textContent;
@@ -38,6 +40,7 @@ function clickFunctionButton(e){
 
     operatorToUse = buttonText;
     pDisplay.textContent = buttonText;
+    isDisplayResetOnNextNumber = true;
 
 }
 
@@ -52,6 +55,7 @@ function clickEqualsButton(e){
         pDisplay.textContent = result;
         firstNumber = Number(pDisplay.textContent);
     }
+    isDisplayResetOnNextNumber = true;
 }
 
 function clickClearAllButton(){
