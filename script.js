@@ -3,9 +3,14 @@ let secondNumber = 0;
 let operatorToUse = "";
 const pDisplay = document.querySelector(".display-p")
 const btnNumButtonsList = document.querySelectorAll(".number-button");
+const btnFuncButtonsList = document.querySelectorAll(".function-button");
 
 btnNumButtonsList.forEach(function (currentValue, currentIndex, listObj){
     currentValue.addEventListener("click", function(e) {clickNumberButton(e)})
+});
+
+btnFuncButtonsList.forEach(function (currentValue, currentIndex, listObj){
+    currentValue.addEventListener("click", function(e) {clickFunctionButton(e)})
 });
 
 function clickNumberButton(e){
@@ -18,7 +23,18 @@ function clickNumberButton(e){
     pDisplay.textContent += button.textContent;
 }
 
+function clickFunctionButton(e){
+    let button = e.target;
+    let buttonText = button.textContent;
+    let displayText = pDisplay.textContent;
+    if(!isNaN(displayText)){
+        firstNumber = Number(displayText);
+    }
 
+    operatorToUse = buttonText;
+    pDisplay.textContent = buttonText;
+
+}
 
 function operate(numOne, numTwo, operator){
     switch(operator) {
