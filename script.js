@@ -1,4 +1,5 @@
 let firstNumber = 0;
+let secondNumber = 0;
 let operatorToUse = "";
 const pDisplay = document.querySelector(".display-p")
 const btnNumButtonsList = document.querySelectorAll(".number-button");
@@ -21,17 +22,17 @@ function clickNumberButton(e){
     if(pDisplay.textContent === operatorToUse){
         pDisplay.textContent = "";
     }
-
+    
     pDisplay.textContent += button.textContent;
+    secondNumber = Number(pDisplay.textContent);
 }
 
 function clickFunctionButton(e){
     let button = e.target;
     let buttonText = button.textContent;
     let displayText = pDisplay.textContent;
-    if(!isNaN(displayText)){
-        firstNumber = Number(displayText);
-    }
+
+    firstNumber = secondNumber
 
     operatorToUse = buttonText;
     pDisplay.textContent = buttonText;
@@ -42,11 +43,9 @@ function clickEqualsButton(e){
     let button = e.target;
     let displayText = pDisplay.textContent;
 
-    if(!isNaN(displayText)){
-        let secondNumber = Number(displayText);
-        pDisplay.textContent = operate(firstNumber,secondNumber,operatorToUse);
-        firstNumber = secondNumber;
-    }
+    pDisplay.textContent = operate(firstNumber,secondNumber,operatorToUse);
+    firstNumber = Number(pDisplay.textContent);
+        
 }
 
 function operate(numOne, numTwo, operator){
