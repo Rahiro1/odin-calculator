@@ -1,6 +1,8 @@
-let firstNumber = 0;
-let secondNumber = 0;
+let storedNumber = 0;
+let activeNumber = 0;
 let operatorToUse = "";
+let previousNumber ="";
+let previousOperator = "";
 let isDisplayResetOnNextNumber = false;
 const pDisplay = document.querySelector(".display-p")
 const btnNumButtonsList = document.querySelectorAll(".number-button");
@@ -16,8 +18,10 @@ btnFuncButtonsList.forEach(function (currentValue, currentIndex, listObj){
     currentValue.addEventListener("click", function(e) {clickFunctionButton(e)})
 });
 
-btnEquals.addEventListener("click", function(e) {clickEqualsButton(e)})
+btnEquals.addEventListener("click", function() {clickEqualsButton()})
 btnClearAll.addEventListener("click", function() {clickClearAllButton()})
+
+
 
 function clickNumberButton(e){
     let button = e.target;
@@ -28,7 +32,8 @@ function clickNumberButton(e){
     }
     
     pDisplay.textContent += button.textContent;
-    secondNumber = Number(pDisplay.textContent);
+    activeNumber = Number(pDisplay.textContent);
+    logAll(button.textContent + " pressed");
 }
 
 function clickFunctionButton(e){
@@ -36,32 +41,58 @@ function clickFunctionButton(e){
     let buttonText = button.textContent;
     let displayText = pDisplay.textContent;
 
-    firstNumber = secondNumber
+    logAll(button.textContent + " pressed state before");
+    if(activeNumber === ""){
+        operatorToUse = buttonText;
+        previousOperator = buttonText;
+        return;
+    }
 
-    operatorToUse = buttonText;
-    pDisplay.textContent = buttonText;
-    isDisplayResetOnNextNumber = true;
-
-}
-
-function clickEqualsButton(e){
-    let button = e.target;
-    let displayText = pDisplay.textContent;
-
-    let result = operate(firstNumber,secondNumber,operatorToUse);
+    let result = operate(storedNumber, activeNumber,operatorToUse);
     if(result == null){
         pDisplay.textContent = "Nice try";
     } else{
         pDisplay.textContent = result;
-        firstNumber = Number(pDisplay.textContent);
+        storedNumber = result;
+        activeNumber = "";
+    }
+ 
+    operatorToUse = buttonText;
+    previousOperator = buttonText;
+    isDisplayResetOnNextNumber = true;
+    logAll(button.textContent + " pressed state after");
+}
+
+function clickEqualsButton(){
+    let button = btnEquals;
+    let displayText = pDisplay.textContent;
+    let result;
+
+    logAll(button.textContent + " pressed state before");
+
+    if(operatorToUse === ""){
+        result = operate(storedNumber,previousNumber,previousOperator);
+    } else {
+        result = operate(storedNumber,activeNumber,operatorToUse);
+        previousNumber = activeNumber;
+    }
+    operatorToUse = "";
+    if(result == null){
+        pDisplay.textContent = "Nice try";
+    } else{
+        pDisplay.textContent = result;
+        storedNumber = result;
+        activeNumber = "";
     }
     isDisplayResetOnNextNumber = true;
+    logAll(button.textContent + " pressed state after");
 }
 
 function clickClearAllButton(){
-    firstNumber = "";
-    secondNumber = "";
+    storedNumber = "";
+    activeNumber = "";
     operatorToUse = "";
+    previousOperator = "";
     pDisplay.textContent = "";
 }
 
@@ -76,16 +107,16 @@ function operate(numOne, numTwo, operator){
         case "/":
             return divide(numOne,numTwo);
     default:
-        return 0;
+        return activeNumber;
     }
 }
 
 function add(numOne, numTwo){
-    return numOne + numTwo;
+    return Number(numOne) + Number(numTwo);
 }
 
 function subtract(numOne, numTwo){
-    return numOne - numTwo;
+    return Number(numOne) - Number(numTwo);
 }
 
 function multiply(numOne, numTwo){
@@ -97,4 +128,13 @@ function divide(numOne, numTwo){
         return null;
     }
     return numOne / numTwo;
+}
+
+function logAll(message){
+    console.log(message);
+    console.log("Active: " + activeNumber);
+    console.log("Stored: " + storedNumber);
+    console.log("Operation: " + operatorToUse);
+    console.log("Previous: " + previousNumber);
+    console.log("Reset display? : " + isDisplayResetOnNextNumber);
 }
