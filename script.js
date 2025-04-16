@@ -9,6 +9,7 @@ const btnNumButtonsList = document.querySelectorAll(".number-button");
 const btnFuncButtonsList = document.querySelectorAll(".function-button");
 const btnEquals = document.querySelector(".equals-button");
 const btnClearAll = document.querySelector(".clear-all-button");
+const btnBackspace = document.querySelector(".backspace-button")
 
 btnNumButtonsList.forEach(function (currentValue, currentIndex, listObj){
     currentValue.addEventListener("click", function(e) {clickNumberButton(e)})
@@ -18,8 +19,9 @@ btnFuncButtonsList.forEach(function (currentValue, currentIndex, listObj){
     currentValue.addEventListener("click", function(e) {clickFunctionButton(e)})
 });
 
-btnEquals.addEventListener("click", function() {clickEqualsButton()})
-btnClearAll.addEventListener("click", function() {clickClearAllButton()})
+btnEquals.addEventListener("click", function() {clickEqualsButton()});
+btnClearAll.addEventListener("click", function() {clickClearAllButton()});
+btnBackspace.addEventListener("click", function() {clickBackspaceButton()})
 
 
 
@@ -39,7 +41,6 @@ function clickNumberButton(e){
 function clickFunctionButton(e){
     let button = e.target;
     let buttonText = button.textContent;
-    let displayText = pDisplay.textContent;
 
     logAll(button.textContent + " pressed state before");
     if(activeNumber === ""){
@@ -65,7 +66,6 @@ function clickFunctionButton(e){
 
 function clickEqualsButton(){
     let button = btnEquals;
-    let displayText = pDisplay.textContent;
     let result;
 
     logAll(button.textContent + " pressed state before");
@@ -96,18 +96,36 @@ function clickClearAllButton(){
     pDisplay.textContent = "";
 }
 
+function clickBackspaceButton(){
+    let activeNumberString = pDisplay.textContent;
+    activeNumberString = activeNumberString.slice(0,activeNumberString.length-1);
+    pDisplay.textContent = activeNumberString;
+    activeNumber = Number(activeNumberString);
+}
+
 function operate(numOne, numTwo, operator){
+    let result;
     switch(operator) {
     case "+":
-        return add(numOne,numTwo);
+        result = add(numOne,numTwo);
+        break;
     case "-":
-        return subtract(numOne,numTwo);
+        result = subtract(numOne,numTwo);
+        break;
         case "*":
-            return multiply(numOne,numTwo);
+            result = multiply(numOne,numTwo);
+            break;
         case "/":
-            return divide(numOne,numTwo);
+            result = divide(numOne,numTwo);
+            break;
     default:
         return activeNumber;
+    }
+
+    if(Math.round(result*1000) == result*1000){
+        return result;
+    } else{
+        return Math.round(result*1000)/1000;
     }
 }
 
